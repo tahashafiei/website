@@ -1,8 +1,16 @@
 /* latin-ext */
+/* @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap'); */
+
+/* @font-face { */
+/*   font-family: "San Francisco"; */
+/*   font-weight: 400; */
+/*   src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff"); */
+/* } */
+
 @font-face {
-  font-family: "San Francisco";
+  font-family: "Fira Code";
   font-weight: 400;
-  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+  src: url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 }
 
 a {
@@ -24,28 +32,33 @@ p,
 a {
   background: #faf4ed;
   color: #191724;
-  font-family: 'San Fransisco', Verdana, Helvetica, sans-serif;
+  /* font-family: 'San Fransisco', Verdana, Helvetica, sans-serif; */
+  font-family: 'Fira Code', monospace;
   font-size: 14px
 }
 
 strong {
-  font-family: 'San Fransisco', Verdana, Helvetica, sans-serif;
+  /* font-family: 'San Fransisco', Verdana, Helvetica, sans-serif; */
+  font-family: 'Fira Code', monospace;
   font-size: 14px;
 }
 
 heading {
-  font-family: 'San Fransisco', Verdana, Helvetica, sans-serif;
+  /* font-family: 'San Fransisco', Verdana, Helvetica, sans-serif; */
+  font-family: 'Fira Code', monospace;
   font-size: 22px;
 }
 
 papertitle {
-  font-family: 'San Fransisco', Verdana, Helvetica, sans-serif;
+  /* font-family: 'San Fransisco', Verdana, Helvetica, sans-serif; */
+  font-family: 'Fira Code', monospace;
   font-size: 14px;
   font-weight: 700
 }
 
 name {
-  font-family: 'San Fransisco', Verdana, Helvetica, sans-serif;
+  /* font-family: 'San Fransisco', Verdana, Helvetica, sans-serif; */
+  font-family: 'Fira Code', monospace;
   font-size: 32px;
 }
 
