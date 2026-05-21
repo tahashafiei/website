@@ -34,19 +34,19 @@
          hx-get="/"
          hx-target="main"
          hx-push-url="true"
-         {{if eq .ActivePage "home"}}aria-current="page"{{end}}>About</a>
+         {{if eq .Active "home"}}aria-current="page"{{end}}>About</a>
 
       <a href="/writing"
          hx-get="/writing"
          hx-target="main"
          hx-push-url="true"
-         {{if eq .ActivePage "writing"}}aria-current="page"{{end}}>Writing</a>
+         {{if eq .Active "writing"}}aria-current="page"{{end}}>Writing</a>
 
       <a href="/misc"
          hx-get="/misc"
          hx-target="main"
          hx-push-url="true"
-         {{if eq .ActivePage "misc"}}aria-current="page"{{end}}>Misc</a>
+         {{if eq .Active "misc"}}aria-current="page"{{end}}>Misc</a>
 
       <button id="theme-toggle" aria-label="Toggle light/dark mode">☀︎</button>
     </nav>
@@ -57,7 +57,7 @@
   </main>
 
   <footer>
-    <span>&copy; {{.CurrentYear}} Taha Shafiei.</span>
+    <span>&copy; {{currentYear}} Taha Shafiei.</span>
     <div class="footer-links">
       <a href="https://github.com/tahashafiei" target="_blank" rel="noopener">github</a>
       <a href="https://www.linkedin.com/in/tahashafiei/" target="_blank" rel="noopener">linkedin</a>

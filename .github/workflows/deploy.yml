@@ -1,0 +1,68 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]   # triggers on every push to main
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REGION: us-central1                         # change to your preferred region
+  SERVICE: personal-site                      # Cloud Run service name
+  IMAGE: personal-site                        # image name in Artifact Registry
+  REGISTRY: us-central1-docker.pkg.dev        # matches REGION above
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Grant the workflow permission to request a short-lived OIDC token
+    # so it can authenticate to GCP without storing a long-lived key.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── 2. Authenticate to Google Cloud via Workload Identity ──────
+      # No JSON key stored in GitHub — uses short-lived OIDC tokens instead.
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      # ── 3. Configure Docker to push to Artifact Registry ──────────
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+
+      # ── 4. Build and push the Docker image ────────────────────────
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Tag with both the commit SHA (immutable) and "latest"
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}:latest
+          # Cache layers between runs to speed up builds
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}:latest
+          cache-to: type=inline
+
+      # ── 5. Deploy to Cloud Run ─────────────────────────────────────
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          image: ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}:${{ github.sha }}
+          flags: >
+            --allow-unauthenticated
+            --min-instances=0
+            --max-instances=3
+            --memory=128Mi
+            --cpu=1
+            --concurrency=80

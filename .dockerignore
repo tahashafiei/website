@@ -1,0 +1,8 @@
+# Don't copy these into the Docker build context
+.git
+.github
+*.md
+!posts/*.md
+site
+*.exe
+.env
