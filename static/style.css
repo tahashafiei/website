@@ -1,0 +1,313 @@
+/* =========================================================
+   Kanagawa Dragon — static/style.css
+   Palette source: github.com/rebelot/kanagawa.nvim
+   ========================================================= */
+
+/* ── Dragon palette reference ─────────────────────────────
+   dragonBlack0  #0d0c0c   deepest bg (unused here)
+   dragonBlack1  #12120f   statusline bg
+   dragonBlack2  #1D1C19   surface / code bg
+   dragonBlack3  #181616   default bg          ← --bg
+   dragonBlack4  #282727   raised surface      ← --surface
+   dragonBlack5  #393836   overlay / selection ← --overlay
+   dragonBlack6  #625e5a   border              ← --border
+   dragonWhite   #c5c9c5   default fg          ← --text
+   dragonGray    #a6a69c   secondary fg        ← --subtle
+   dragonAsh     #737c73   comments / muted    ← --muted
+   dragonBlue2   #8ba4b0   functions / links   ← --link
+   dragonViolet  #8992a7   keywords / accent   ← --accent
+   dragonYellow  #c4b28a   identifiers
+   dragonGreen   #87a987   strings
+   dragonAqua    #8ea4a2   types
+   dragonRed     #c4746e   errors / operators
+   ========================================================= */
+
+:root {
+  /* Backgrounds */
+  --bg:        #181616; /* dragonBlack3 — page background      */
+  --surface:   #1D1C19; /* dragonBlack2 — code blocks, inputs  */
+  --overlay:   #282727; /* dragonBlack4 — raised panels        */
+
+  /* Foregrounds */
+  --text:      #c5c9c5; /* dragonWhite  — primary text         */
+  --subtle:    #a6a69c; /* dragonGray   — secondary text, dates*/
+  --muted:     #737c73; /* dragonAsh    — comments, disabled   */
+
+  /* Borders */
+  --border:    #625e5a; /* dragonBlack6 — dividers             */
+
+  /* Accents */
+  --link:      #8ba4b0; /* dragonBlue2  — links                */
+  --accent:    #8992a7; /* dragonViolet — active/hover states  */
+  --accent2:   #c4746e; /* dragonRed    - Highlight current location */
+
+  /* Typography */
+  --font-body: 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+
+  /* Layout */
+  --width: 680px;
+  --gap:   1.5rem;
+}
+
+/* ── Light: Kanagawa Lotus ────────────── */
+[data-theme="light"] {
+  --bg:      #f2ecbc; /* lotusWhite3 */
+  --surface: #e7dba0; /* lotusWhite4 */
+  --overlay: #dcd5ac; /* lotusWhite1 */
+  --text:    #545464; /* lotusInk1   */
+  --subtle:  #716e61; /* lotusGray2  */
+  --muted:   #8a8980; /* lotusGray3  */
+  --border:  #c9cbd1; /* lotusViolet3 */
+  --link:    #4d699b; /* lotusBlue4  */
+  --accent:  #624c83; /* lotusViolet4 */
+  --accent2: #c84053; /* lotusRed */
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Base ────────────────────────────────────────────────── */
+html {
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.75;
+  padding: 3rem 1.5rem 6rem;
+}
+
+/* ── Layout ──────────────────────────────────────────────── */
+.container { max-width: var(--width); margin: 0 auto; }
+
+/* ── Header ──────────────────────────────────────────────── */
+header { margin-bottom: 3rem; }
+
+header h1 {
+  font-size: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.55rem;
+}
+
+header h1 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+header h1 a:hover { text-decoration: underline; }
+
+/* ── Nav ─────────────────────────────────────────────────── */
+nav { display: flex; gap: 1.25rem; font-size: 0.9rem; }
+
+nav a {
+  color: var(--accent2);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+nav a:hover { color: var(--text); }
+
+nav a[aria-current="page"] {
+  color: var(--accent2);
+  text-decoration: underline;
+  text-decoration-color: var(--accent2);
+  text-underline-offset: 4px;
+}
+
+/* ── Typography ──────────────────────────────────────────── */
+p { margin-bottom: var(--gap); }
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent);
+  text-underline-offset: 3px;
+  transition: color 120ms ease, text-decoration-color 120ms ease;
+}
+
+a:hover {
+  color: var(--text);
+  text-decoration-color: var(--text);
+}
+
+/* ── Post list ───────────────────────────────────────────── */
+.post-list { list-style: none; }
+
+.post-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-list li:first-child { border-top: 1px solid var(--border); }
+
+.post-list a {
+  text-decoration: none;
+  color: var(--text);
+  transition: color 120ms ease;
+}
+
+.post-list a:hover {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.post-list time {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* ── Post header ─────────────────────────────────────────── */
+.post-header { margin-bottom: 2.5rem; }
+
+.post-header h1 {
+  font-size: 1.55rem;
+  font-weight: normal;
+  line-height: 1.35;
+  color: var(--text);
+  margin-bottom: 0.45rem;
+}
+
+.post-header time {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Prose (rendered markdown) ───────────────────────────── */
+.prose h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: var(--text);
+  margin: 2.5rem 0 0.75rem;
+}
+
+.prose h3 {
+  font-size: 1.05rem;
+  font-weight: normal;
+  color: var(--text);
+  margin: 2rem 0 0.5rem;
+}
+
+.prose p { margin-bottom: var(--gap); }
+
+.prose ul,
+.prose ol { padding-left: 1.5rem; margin-bottom: var(--gap); }
+
+.prose li { margin-bottom: 0.3rem; }
+
+.prose blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+  color: var(--subtle);
+  margin: var(--gap) 0;
+  font-style: italic;
+}
+
+.prose pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  border-radius: 4px;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  margin-bottom: var(--gap);
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.87em;
+  background: var(--surface);
+  color: var(--subtle);           /* dragonGray — inline code */
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+.prose img {
+  max-width: 100%;
+  display: block;
+  margin: var(--gap) 0;
+  border-radius: 4px;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.footer-links { display: flex; gap: 1rem; align-items: center; }
+
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+footer a:hover { color: var(--text); }
+
+/* ── HTMX request indicator ──────────────────────────────── */
+.htmx-request #main {
+  opacity: 0.5;
+  transition: opacity 150ms ease;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 520px) {
+  html { font-size: 16px; }
+
+  .post-list li {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+}
+
+/* ── Theme Button ────────────────────────────────────────── */ 
+#theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--muted);
+  padding: 0;
+  margin-left: auto;   /* pushes it to the far right of the nav */
+  line-height: 1;
+  transition: color 120ms ease;
+}
+
+#theme-toggle:hover { color: var(--text); }

@@ -1,0 +1,23 @@
+# ── Binary ────────────────────────────────────────────────
+personalsite
+personalsite.exe
+site
+site.exe
+ 
+# ── Go toolchain ──────────────────────────────────────────
+vendor/
+ 
+# ── Environment / secrets ─────────────────────────────────
+.env
+.env.local
+*.env
+ 
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+ 
+# ── Editors ───────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo

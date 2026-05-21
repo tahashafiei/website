@@ -1,0 +1,21 @@
+{{define "content"}}
+{{if .Posts}}
+<ul class="post-list">
+  {{range .Posts}}
+  <li>
+    <!--
+      Post links also use HTMX — clicking one swaps <main>
+      with the post content, no full page reload.
+    -->
+    <a href="/writing/{{.Slug}}"
+       hx-get="/writing/{{.Slug}}"
+       hx-target="main"
+       hx-push-url="true">{{.Title}}</a>
+    <time datetime="{{.Date}}">{{.DatePretty}}</time>
+  </li>
+  {{end}}
+</ul>
+{{else}}
+<p>No posts yet.</p>
+{{end}}
+{{end}}

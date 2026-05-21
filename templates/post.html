@@ -1,0 +1,11 @@
+{{define "content"}}
+<article>
+  <header class="post-header">
+    <h1>{{.Post.Title}}</h1>
+    <time datetime="{{.Post.Date}}">{{.Post.DatePretty}}</time>
+  </header>
+  <div class="prose">
+    {{.Post.ContentHTML}}
+  </div>
+</article>
+{{end}}

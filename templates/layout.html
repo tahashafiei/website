@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <!--
+    HTMX — the only JS on the page (~14kb gzipped).
+    No build step, no bundler, loaded once and cached forever.
+  -->
+  <script src="https://unpkg.com/htmx.org@2.0.0/dist/htmx.min.js" defer></script>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1><a href="/"
+          hx-get="/"
+          hx-target="main"
+          hx-push-url="true">Taha Shafiei</a></h1>
+    <nav>
+      <!--
+        Every nav link carries three HTMX attributes:
+          hx-get       → fetch this URL via AJAX instead of a full reload
+          hx-target    → inject the response into <main>
+          hx-push-url  → update the address bar so back/forward still work
+
+        On the very first visit (or a hard refresh), the browser loads
+        the full page. On subsequent navigations HTMX takes over:
+        only <main> is swapped, the header/footer/CSS never re-download.
+      -->
+      <a href="/"
+         hx-get="/"
+         hx-target="main"
+         hx-push-url="true"
+         {{if eq .ActivePage "home"}}aria-current="page"{{end}}>About</a>
+
+      <a href="/writing"
+         hx-get="/writing"
+         hx-target="main"
+         hx-push-url="true"
+         {{if eq .ActivePage "writing"}}aria-current="page"{{end}}>Writing</a>
+
+      <a href="/misc"
+         hx-get="/misc"
+         hx-target="main"
+         hx-push-url="true"
+         {{if eq .ActivePage "misc"}}aria-current="page"{{end}}>Misc</a>
+
+      <button id="theme-toggle" aria-label="Toggle light/dark mode">☀︎</button>
+    </nav>
+  </header>
+
+  <main id="main">
+    {{template "content" .}}
+  </main>
+
+  <footer>
+    <span>&copy; {{.CurrentYear}} Taha Shafiei.</span>
+    <div class="footer-links">
+      <a href="https://github.com/tahashafiei" target="_blank" rel="noopener">github</a>
+      <a href="https://www.linkedin.com/in/tahashafiei/" target="_blank" rel="noopener">linkedin</a>
+      <a href="/static/Resume_9_5_2.pdf" target="_blank" rel="noopener">resume</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // ── Theme toggle ────────────────────────────────────────
+  // Read saved preference, fall back to system preference.
+  const saved = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = saved ? saved === "dark" : prefersDark;
+
+  // Apply on page load — before paint to avoid flash.
+  if (!isDark) document.documentElement.setAttribute("data-theme", "light");
+
+  const btn = document.getElementById("theme-toggle");
+
+  function applyTheme(dark) {
+    if (dark) {
+      document.documentElement.removeAttribute("data-theme");
+      btn.textContent = "☀︎";
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      btn.textContent = "☽";
+    }
+  }
+
+  applyTheme(isDark);
+
+  btn.addEventListener("click", function () {
+    const currentlyDark = !document.documentElement.hasAttribute("data-theme");
+    const next = !currentlyDark;
+    localStorage.setItem("theme", next ? "dark" : "light");
+    applyTheme(next);
+  });
+  
+  // After every HTMX swap, re-sync aria-current on nav links.
+  // The server sets it correctly on full loads; this keeps it accurate
+  // during client-side HTMX navigation.
+  document.body.addEventListener('htmx:afterSwap', function () {
+    var path = window.location.pathname;
+    document.querySelectorAll('nav a').forEach(function (a) {
+      var href = a.getAttribute('href');
+      var active = href === '/' ? path === '/' : path.startsWith(href);
+      active ? a.setAttribute('aria-current', 'page')
+             : a.removeAttribute('aria-current');
+    });
+  });
+</script>
+</body>
+</html>
