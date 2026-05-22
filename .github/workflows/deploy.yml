@@ -66,3 +66,13 @@ jobs:
             --memory=128Mi
             --cpu=1
             --concurrency=80
+
+      # ── 6. Prune images older than 30 days ────────────────────────
+      - name: Prune old images
+        run: |
+          gcloud artifacts docker images list \
+            ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }} \
+            --filter="createTime < -P30D" \
+            --format="get(version)" | \
+          xargs -r -I {} gcloud artifacts docker images delete \
+            ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}@{} --quiet
