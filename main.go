@@ -127,7 +127,7 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	render(w, r, "home", PageData{Title: "Your Name", Active: "home"})
+	render(w, r, "home", PageData{Title: "Taha Shafiei", Active: "home"})
 }
 
 func handleWriting(w http.ResponseWriter, r *http.Request) {
