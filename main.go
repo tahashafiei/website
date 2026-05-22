@@ -137,7 +137,7 @@ func handleWriting(w http.ResponseWriter, r *http.Request) {
 		log.Printf("loadAllPosts: %v", err)
 		return
 	}
-	render(w, r, "writing", PageData{Title: "Writing", Active: "writing", Posts: posts})
+	render(w, r, "writing", PageData{Title: "Writing | Taha Shafiei", Active: "writing", Posts: posts})
 }
 
 func handlePost(w http.ResponseWriter, r *http.Request) {
@@ -151,11 +151,11 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	render(w, r, "post", PageData{Title: post.Title, Active: "writing", Post: post})
+	render(w, r, "post", PageData{Title: post.Title + " | Taha Shafiei", Active: "writing", Post: post})
 }
 
 func handleMisc(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "misc", PageData{Title: "Misc", Active: "misc"})
+	render(w, r, "misc", PageData{Title: "Misc | Taha Shafiei", Active: "misc"})
 }
 
 // ── Render ─────────────────────────────────────────────────────────────
@@ -171,6 +171,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data PageData) 
 
 	var err error
 	if r.Header.Get("HX-Request") == "true" {
+		w.Header().Set("HX-Title", data.Title)
 		err = tmpl.ExecuteTemplate(w, "content", data)
 	} else {
 		err = tmpl.ExecuteTemplate(w, "layout.html", data)

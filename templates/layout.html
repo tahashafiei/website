@@ -101,7 +101,9 @@
   // After every HTMX swap, re-sync aria-current on nav links.
   // The server sets it correctly on full loads; this keeps it accurate
   // during client-side HTMX navigation.
-  document.body.addEventListener('htmx:afterSwap', function () {
+  document.body.addEventListener('htmx:afterSwap', function (e) {
+    var title = e.detail.xhr.getResponseHeader('HX-Title');
+    if (title) document.title = title;
     var path = window.location.pathname;
     document.querySelectorAll('nav a').forEach(function (a) {
       var href = a.getAttribute('href');
